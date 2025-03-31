@@ -1,6 +1,7 @@
 package com.gkanawati.agregadordeinvestimentos_api.entity;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 import jakarta.persistence.*;
 import jakarta.persistence.GenerationType;
@@ -29,6 +30,9 @@ public class UserEntity {
 
   @UpdateTimestamp
   private Instant updateTimestamp;
+
+  @OneToMany(mappedBy = "user")
+  private List<AccountEntity> accounts;
 
   public UserEntity() {
   }
@@ -90,4 +94,11 @@ public class UserEntity {
     this.updateTimestamp = updateTimestamp;
   }
 
+  public List<AccountEntity> getAccounts() {
+    return accounts;
+  }
+
+  public void setAccounts(List<AccountEntity> accounts) {
+    this.accounts = accounts;
+  }
 }

@@ -1,5 +1,7 @@
 package com.gkanawati.agregadordeinvestimentos_api.controller;
 
+import com.gkanawati.agregadordeinvestimentos_api.dto.AccountResponseDTO;
+import com.gkanawati.agregadordeinvestimentos_api.dto.CreateAccountDTO;
 import com.gkanawati.agregadordeinvestimentos_api.dto.CreateUserDTO;
 import com.gkanawati.agregadordeinvestimentos_api.dto.UpdateUserDTO;
 import com.gkanawati.agregadordeinvestimentos_api.entity.UserEntity;
@@ -26,7 +28,7 @@ public class UserController {
     return ResponseEntity.created(URI.create("/v1/users/" + userId.toString())).build();
   }
 
-  @GetMapping("{userId}")
+  @GetMapping("/{userId}")
   public ResponseEntity<UserEntity> getUserById(@PathVariable String userId) {
     var user = userService.getUserById(userId);
 
@@ -44,7 +46,7 @@ public class UserController {
     return ResponseEntity.ok(users);
   }
 
-  @PutMapping("{userId}")
+  @PutMapping("/{userId}")
   public ResponseEntity<UserEntity> updateUserById(@PathVariable String userId, @RequestBody UpdateUserDTO updateUserDTO) {
     var updatedUser = userService.updateUserById(userId, updateUserDTO);
 
@@ -55,10 +57,21 @@ public class UserController {
     return ResponseEntity.notFound().build();
   }
 
-  @DeleteMapping("{userId}")
+  @DeleteMapping("/{userId}")
   public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
     userService.deleteUserById(userId);
     return ResponseEntity.noContent().build();
   }
 
+  @PostMapping("/{userId}/accounts")
+  public ResponseEntity<Void> addAccount(@PathVariable String userId, @RequestBody CreateAccountDTO createAccountDTO) {
+    userService.addAccount(userId, createAccountDTO);
+    return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/{userId}/accounts")
+  public ResponseEntity<List<AccountResponseDTO>> listAccounts(@PathVariable String userId) {
+    var accounts = userService.listAccounts(userId);
+    return ResponseEntity.ok(accounts);
+  }
 }
